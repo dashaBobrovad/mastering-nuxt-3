@@ -23,7 +23,18 @@
 		</div>
 
 		<div class="prose p-12 bg-white rounded-md w-[65ch]">
-			<NuxtPage />
+			<NuxtErrorBoundary>
+				<NuxtPage />
+				<template #error="{ error, clearError }">
+					<p>smt went wrong on course page
+						<code>{{ error }}</code>
+					</p>
+					<p>
+						<button class="ounded text-white font-bold py-2 px-4 cursor-pointer bg-gray-500"
+							@click="clearError(error)">reset error</button>
+					</p>
+				</template>
+			</NuxtErrorBoundary>
 		</div>
 	</div>
 </template>
