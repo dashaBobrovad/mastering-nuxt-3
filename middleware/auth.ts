@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware((from: { params: { chapterSlug: string; }; }, to: any) => {
+export default defineNuxtRouteMiddleware((from) => {
     if (from.params.chapterSlug === "1-chapter-1") {
         return;
     }
