@@ -24,37 +24,37 @@ const course = useCourse();
 const route = useRoute();
 
 definePageMeta({
-	// middleware
-	validate({ params }) {
-		const chapter = computed(() => {
-			return course.chapters.find(
-				(chapter) => chapter.slug === params.chapterSlug
-			);
-		});
+	middleware: [function ({ params }, from) {
+		const chapter = course.chapters.find(
+			(chapter) => chapter.slug === params.chapterSlug
+		);
 
-		if (!chapter.value) {
-			throw createError({
-				statusCode: 404,
-				message: 'not chapter'
-			})
+		if (!chapter) {
+			return abortNavigation(
+				createError({
+					statusCode: 404,
+					message: 'not chapter'
+				})
+			)
 		}
 
-		const lesson = computed(() => {
-			return chapter.value.lessons.find(
-				(lesson) => lesson.slug === params.lessonSlug
-			);
-		});
+		const lesson = chapter.lessons.find(
+			(lesson) => lesson.slug === params.lessonSlug
+		);
 
-		if (!lesson.value) {
-			throw createError({
-				statusCode: 404,
-				message: 'not lesson'
-			})
+		if (!lesson) {
+			return abortNavigation(
+				createError({
+					statusCode: 404,
+					message: 'not lesson'
+				})
+			)
 		}
+	}, 
+	'auth',
+]
+});
 
-		return true;
-	}
-})
 const chapter = computed(() => {
 	return course.chapters.find(
 		(chapter) => chapter.slug === route.params.chapterSlug
