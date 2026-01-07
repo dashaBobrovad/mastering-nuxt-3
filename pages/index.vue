@@ -1,5 +1,5 @@
 <template>
-	<NuxtLink class="underline font-medium" :to="firstLesson.path">
+	<NuxtLink v-if="firstLesson" class="underline font-medium" :to="firstLesson.path">
 		Go to first lesson
 	</NuxtLink>
 </template>
