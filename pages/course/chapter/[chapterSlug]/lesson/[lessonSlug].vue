@@ -5,28 +5,17 @@
 		</p>
 		<h2 class="my-0">{{ lesson.title }}</h2>
 		<div class="flex mt-2 mb-8 space-x-4">
-			<NuxtLink
-				v-if="lesson.sourceUrl"
-				class="font-normal text-gray-500 text-md"
-				:to="lesson.sourceUrl"
-			>
+			<NuxtLink v-if="lesson.sourceUrl" class="font-normal text-gray-500 text-md" :to="lesson.sourceUrl">
 				Download Source Code
 			</NuxtLink>
-			<NuxtLink
-				v-if="lesson.downloadUrl"
-				class="font-normal text-gray-500 text-md"
-				:to="lesson.downloadUrl"
-			>
+			<NuxtLink v-if="lesson.downloadUrl" class="font-normal text-gray-500 text-md" :to="lesson.downloadUrl">
 				Download Video
 			</NuxtLink>
 		</div>
 		<VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
 		<p>{{ lesson.text }}</p>
 
-		<LessonCompleteButton
-			:model-value="isLessonComplete"
-			@update:model-value="() => {throw createError('my own error')}"
-		/>
+		<LessonCompleteButton :model-value="isLessonComplete" @update:model-value="toggleComplete" />
 	</div>
 </template>
 
@@ -34,6 +23,38 @@
 const course = useCourse();
 const route = useRoute();
 
+definePageMeta({
+	// middleware
+	validate({ params }) {
+		const chapter = computed(() => {
+			return course.chapters.find(
+				(chapter) => chapter.slug === params.chapterSlug
+			);
+		});
+
+		if (!chapter.value) {
+			throw createError({
+				statusCode: 404,
+				message: 'not chapter'
+			})
+		}
+
+		const lesson = computed(() => {
+			return chapter.value.lessons.find(
+				(lesson) => lesson.slug === params.lessonSlug
+			);
+		});
+
+		if (!lesson.value) {
+			throw createError({
+				statusCode: 404,
+				message: 'not lesson'
+			})
+		}
+
+		return true;
+	}
+})
 const chapter = computed(() => {
 	return course.chapters.find(
 		(chapter) => chapter.slug === route.params.chapterSlug

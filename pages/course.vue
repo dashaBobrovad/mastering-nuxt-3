@@ -31,7 +31,7 @@
 					</p>
 					<p>
 						<button class="ounded text-white font-bold py-2 px-4 cursor-pointer bg-gray-500"
-							@click="clearError(error)">reset error</button>
+							@click="resetError(clearError)">reset error</button>
 					</p>
 				</template>
 			</NuxtErrorBoundary>
@@ -41,4 +41,13 @@
 
 <script setup>
 const { chapters } = useCourse();
+
+const resetError =  async (clearError) => {
+	// await navigateTo('/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3');
+	// clearError();
+	throw createError({
+		fatal: true,
+		message: 'test',
+	})
+}
 </script>
