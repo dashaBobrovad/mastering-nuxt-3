@@ -4,7 +4,7 @@
 
         <div class="text-right">
             <div class="font-medium">{{ name }}</div>
-            <button @click="handleLogout" class="text-sm underline text-slate-500">
+            <button @click="logout" class="text-sm underline text-slate-500">
                 Log out
             </button>
         </div>
@@ -13,6 +13,7 @@
 
 <script setup>
 const user = useSupabaseUser();
+const { auth } = useSupabaseClient();
 
 const name = computed(() => {
     return user.value?.user_metadata?.full_name;
@@ -21,4 +22,15 @@ const name = computed(() => {
 const profile = computed(() => {
     return user.value?.user_metadata?.avatar_url;
 });
+
+const logout = async () => {
+    const { error } = await auth.signOut();
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    await navigateTo("/login");
+}
 </script>
