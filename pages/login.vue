@@ -10,16 +10,24 @@
 
 <script setup lang="ts">
 const { title } = useCourse();
+const route = useRoute();
 
 const supabase = useSupabaseClient();
 
 const login = async () => {
+  const origin = window.location.origin;
+  const destination = route.query.redirectTo as string || '/';
+  
+  const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(destination)}`;
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
+    options: { redirectTo },
   });
 
   if (error) {
     console.error(error);
   }
 };
+
 </script>
