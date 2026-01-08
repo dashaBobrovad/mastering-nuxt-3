@@ -1,13 +1,13 @@
 export default defineNuxtConfig({
-	compatibilityDate: '2026-01-04',
-	modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt', '@nuxtjs/supabase'],
+				compatibilityDate: '2026-01-04',
+				modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt', '@nuxtjs/supabase', '@pinia/nuxt'],
 
-	supabase: {
-		redirect: false,
-		redirectOptions: {
-			login: '/login',
-			callback: '/auth/callback',
-			exclude: []
-		  }
-	}
+				supabase: {
+								redirect: false,
+								redirectOptions: {
+												login: '/login',
+												callback: '/auth/callback',
+												exclude: []
+										}
+				}
 })
