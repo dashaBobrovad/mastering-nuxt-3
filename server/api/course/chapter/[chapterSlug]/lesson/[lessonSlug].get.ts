@@ -1,5 +1,6 @@
 import type { Chapter, Course, Lesson, LessonWithPath } from '~/types/course';
 import course from '~/server/courseData';
+import protectRoute from '~/server/utils/protectRoute';
 
 course as Course;
 
@@ -11,6 +12,10 @@ export default defineEventHandler((event): LessonWithPath => {
     };
 
     const { chapterSlug, lessonSlug } = params;
+
+    if (chapterSlug !== "1-chapter-1") {
+        protectRoute(event);
+    }
 
     const chapter: Maybe<Chapter> = course.chapters.find(
         (chapter) => chapter.slug === chapterSlug
